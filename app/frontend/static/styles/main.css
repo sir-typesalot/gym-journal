@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100;200;300;400&display=swap');
+:root {
+    --blue: #1e90ff;
+    --white: #E7EDEB;
+
+    --neon-blue: #2272FF;
+    --pitch-black: #1D1D1D;
+    --baby-blue: #7EC8E3;
+    --navy-blue: #000C66;
+}
+body {
+    font-family: 'Libre Franklin', sans-serif !important;
+    background-color: var(--pitch-black);
+    color: var(--white);
+}
+.navbar, .navbar-brand, .nav-link {
+    background-color: var(--neon-blue) !important;
+    font-weight: 500;
+    color: var(--white) !important;
+}
