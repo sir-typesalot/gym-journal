@@ -1,3 +1,6 @@
+"""
+    Run the flask application, either in local or live mode.
+"""
 import argparse
 from flask import Flask
 from waitress import serve
