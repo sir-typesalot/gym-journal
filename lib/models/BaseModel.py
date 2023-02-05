@@ -1,10 +1,10 @@
 import logging
-from lib.db import db_connect
+from lib.db import DB
 
 logging.basicConfig(level = logging.INFO)
 
 class BaseModel(object):
 
     def __init__(self):
-        self.db = db_connect
+        self.db = DB().db_connect
         self.logger = logging.getLogger("base_logger")
