@@ -18,3 +18,8 @@ body {
     font-weight: 500;
     color: var(--white) !important;
 }
+
+.login-form {
+    max-width: 30rem;
+    min-width: 300px;
+}

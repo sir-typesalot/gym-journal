@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block imports %}
+<link rel="stylesheet" href="{{url_for('static',filename='styles/login.css')}}?v={{ config.cache }}">
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row justify-content-sm-center">
+    <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+      <div class="text-center my-1">
+        <img src="{{ url_for('static', filename='images/barbell-icon.png') }}" alt="logo" width="100">
+      </div>
+      <div class="form-card card shadow-lg mb-4">
+        <div class="card-body p-3">
+          <h1 class="fs-4 card-title fw-bold mb-4">Create An Account</h1>
+          <form action="/sign-up" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+              <label class="mb-2 text-muted" for="email">Email</label>
+              <input id="email" type="email" class="form-control" name="email" required autofocus>
+            </div>
+            <div class="mb-3">
+              <label class="mb-2 text-muted" for="username">Username</label>
+              <input id="username" type="text" class="form-control" name="username" required>
+            </div>
+            <div class="mb-3">
+              <label class="text-muted" for="password">Password</label>
+              <input id="password" type="password" class="form-control" name="password" required>
+            </div>
+            <div class="mb-3">
+              <label class="text-muted" for="password">Confirm Password</label>
+              <input id="password" type="password" class="form-control" name="password" required>
+            </div>
+
+            <div class="align-items-center">
+              <button type="submit" class="btn btn-primary ms-auto">
+                Sign Up
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
