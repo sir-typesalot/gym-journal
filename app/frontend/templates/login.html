@@ -9,18 +9,18 @@
       <div class="text-center my-1">
         <img src="{{ url_for('static', filename='images/barbell-icon.png') }}" alt="logo" width="100">
       </div>
-      <div class="form-card card shadow-lg">
+      <div class="form-card card shadow-lg bg-dark">
         <div class="card-body p-3">
           <h1 class="fs-4 card-title fw-bold mb-4">Login</h1>
           <form action="/login" method="POST" enctype="multipart/form-data" class="needs-validation">
             <div class="mb-3">
-              <label class="mb-2 text-muted" for="username">Username</label>
+              <label class="mb-2" for="username">Username</label>
               <input id="username" type="text" class="form-control" name="username" required autofocus>
             </div>
 
             <div class="mb-3">
               <div class="mb-2 w-100">
-                <label class="text-muted" for="password">Password</label>
+                <label for="password">Password</label>
                 <a href="/forgot-password" class="float-end">
                   Forgot Password?
                 </a>
@@ -41,7 +41,7 @@
         </div>
         <div class="card-footer py-3 border-0">
           <div class="text-center">
-            Don't have an account? <a href="/signup" class="text-dark">Create One</a>
+            Don't have an account? <a href="/signup">Create One</a>
           </div>
         </div>
       </div>

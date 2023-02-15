@@ -7,14 +7,25 @@
     --pitch-black: #1D1D1D;
     --baby-blue: #7EC8E3;
     --navy-blue: #000C66;
+
+    --light-primary: #EE4540;
+    --light-secondary: #C72C41;
+    --crimson: #801336;
+    --dark-medium: #510A32;
+    --dark-base: #1D142C;
 }
 body {
     font-family: 'Libre Franklin', sans-serif !important;
-    background-color: var(--pitch-black);
+    background: var(--light-primary);
+    background: linear-gradient(0deg, var(--light-primary) 12%, var(--light-secondary) 27%, var(--crimson) 41%, var(--dark-base) 75%);
     color: var(--white);
 }
+.bg-dark {
+    background: var(--dark-base) !important;
+    color: var(--white) !important;
+}
 .navbar, .navbar-brand, .nav-link {
-    background-color: var(--neon-blue) !important;
+    background-color: var(--light-secondary) !important;
     font-weight: 500;
     color: var(--white) !important;
 }
