@@ -42,7 +42,7 @@ CREATE TABLE `dashboard_users` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`username` VARCHAR(100) NOT NULL DEFAULT '' COMMENT 'username',
 	`email` VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'email',
-	`password_hash` CHAR NOT NULL COMMENT 'password',
+	`password_hash` CHAR(60) NOT NULL COMMENT 'password',
 	`create_datetime` DATETIME NOT NULL COMMENT 'date',
 	PRIMARY KEY (`id`)
 );
