@@ -30,6 +30,45 @@ CREATE TABLE `exercises` (
 	PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `routine_user_map` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`routine_id` INT NOT NULL DEFAULT '',
+	`user_id` INT NOT NULL DEFAULT '',
+	`config` JSON,
+	PRIMARY KEY (`id`)
+);
 
+CREATE TABLE `dashboard_users` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`username` VARCHAR(100) NOT NULL DEFAULT '' COMMENT 'username',
+	`email` VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'email',
+	`password_hash` CHAR(60) NOT NULL COMMENT 'password',
+	`create_datetime` DATETIME NOT NULL COMMENT 'date',
+	PRIMARY KEY (`id`)
+);
 
+CREATE TABLE `set_history` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`set_id` INT NOT NULL DEFAULT '',
+	`unit` ENUM NOT NULL,
+	`count` INT NOT NULL COMMENT 'reps',
+	`load` INT NOT NULL COMMENT 'lb/kg',
+	`record_date` DATETIME NOT NULL,
+	PRIMARY KEY (`id`)
+);
 
+CREATE TABLE `routine_edit_lock` (
+	`routine_id` INT NOT NULL DEFAULT '',
+	`user_id` INT NOT NULL DEFAULT '',
+	`start_datetime` DATETIME NOT NULL,
+	PRIMARY KEY (`routine_id`)
+);
+
+CREATE TABLE `user_configuration` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`user_id` INT NOT NULL DEFAULT '',
+	`parameter_name` VARCHAR(255) NOT NULL,
+	`parameter_value` VARCHAR(255) NOT NULL,
+	`modify_datetime` DATETIME NOT NULL,
+	PRIMARY KEY (`id`)
+);
