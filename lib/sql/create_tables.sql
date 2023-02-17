@@ -18,7 +18,11 @@ CREATE TABLE `exercise_sets` (
 	`rest` INT,
 	`rpe` INT,
 	`pct_1rm` INT,
+	`is_cluster_set` BOOLEAN NOT NULL DEFAULT 'false',
+	`cluster_set_scheme` VARCHAR(10) DEFAULT NULL,
 	PRIMARY KEY (`id`)
+	FOREIGN KEY (`exercise_id`) REFERENCES exercises(`id`)
+	FOREIGN KEY (`routine_id`) REFERENCES routine(`id`)
 );
 
 CREATE TABLE `exercises` (
@@ -36,6 +40,8 @@ CREATE TABLE `routine_user_map` (
 	`user_id` INT NOT NULL DEFAULT '',
 	`config` JSON,
 	PRIMARY KEY (`id`)
+	FOREIGN KEY (`routine_id`) REFERENCES routine(`id`)
+	FOREIGN KEY (`user_id`) REFERENCES dashboard_users(`id`)
 );
 
 CREATE TABLE `dashboard_users` (
@@ -55,6 +61,7 @@ CREATE TABLE `set_history` (
 	`load` INT NOT NULL COMMENT 'lb/kg',
 	`record_date` DATETIME NOT NULL,
 	PRIMARY KEY (`id`)
+	FOREIGN KEY (`set_id`) REFERENCES exercise_sets(id)
 );
 
 CREATE TABLE `routine_edit_lock` (
@@ -62,6 +69,8 @@ CREATE TABLE `routine_edit_lock` (
 	`user_id` INT NOT NULL DEFAULT '',
 	`start_datetime` DATETIME NOT NULL,
 	PRIMARY KEY (`routine_id`)
+	FOREIGN KEY (`routine_id`) REFERENCES routine(`id`)
+	FOREIGN KEY (`user_id`) REFERENCES dashboard_users(`id`)
 );
 
 CREATE TABLE `user_configuration` (
@@ -71,4 +80,5 @@ CREATE TABLE `user_configuration` (
 	`parameter_value` VARCHAR(255) NOT NULL,
 	`modify_datetime` DATETIME NOT NULL,
 	PRIMARY KEY (`id`)
+	FOREIGN KEY (`user_id`) REFERENCES dashboard_users(`id`)
 );
