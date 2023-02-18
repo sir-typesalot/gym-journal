@@ -1,0 +1,20 @@
+<div>
+    {% if data.history %}
+    <div class="list-group">
+      {% for record in data.history %}
+      <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ record.name }}</h5>
+          <small>{{ record.date }}</small>
+        </div>
+        <small>Click for more detailed info</small>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="justify-content-center">
+        No Workouts Recorded, get up and log one!
+    </div>
+    {% endif %}
+
+</div>

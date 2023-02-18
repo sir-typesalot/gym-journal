@@ -21,13 +21,29 @@ body {
     background: linear-gradient(0deg, var(--light-primary) 12%, var(--light-secondary) 27%, var(--crimson) 41%, var(--dark-base) 75%);
     color: var(--white);
 }
+.navbar, .navbar-brand, .nav-link {
+    background-color: var(--light-secondary) !important;
+    font-weight: 500;
+    color: var(--white) !important;
+}
 .bg-dark {
     background: var(--dark-base) !important;
     color: var(--white) !important;
 }
-.navbar, .navbar-brand, .nav-link {
-    background-color: var(--light-secondary) !important;
-    font-weight: 500;
+.bg-dark-md {
+    background: var(--dark-medium) !important;
+    color: var(--white) !important;
+}
+.bg-light {
+    background: var(--light-primary) !important;
+    color: var(--white) !important;
+}
+.bg-medium {
+    background: var(--light-secondary) !important;
+    color: var(--white) !important;
+}
+.bg-crimson {
+    background: var(--crimson) !important;
     color: var(--white) !important;
 }
 

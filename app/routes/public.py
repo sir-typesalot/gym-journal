@@ -10,14 +10,14 @@ variables = {
 
 @external.route('/', methods=['GET'])
 def public():
-    return render_template('home.html', vars=variables)
+    return render_template('home.html', data=variables)
 
 @external.route('/login', methods=['GET', 'POST'])
 def login():
     variables['title'] = "Login"
-    return render_template('login.html', vars=variables)
+    return render_template('login.html', data=variables)
 
 @external.route('/signup', methods=['GET', 'POST'])
 def sign_up():
     variables['title'] = "Sign Up"
-    return render_template('signup.html', vars=variables)
+    return render_template('signup.html', data=variables)
