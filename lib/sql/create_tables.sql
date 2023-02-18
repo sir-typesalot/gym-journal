@@ -61,7 +61,7 @@ CREATE TABLE `set_history` (
 	`load` INT NOT NULL COMMENT 'lb/kg',
 	`record_date` DATETIME NOT NULL,
 	PRIMARY KEY (`id`)
-	FOREIGN KEY (`set_id`) REFERENCES exercise_sets(id)
+	FOREIGN KEY (`set_id`) REFERENCES exercise_sets('id')
 );
 
 CREATE TABLE `routine_edit_lock` (
