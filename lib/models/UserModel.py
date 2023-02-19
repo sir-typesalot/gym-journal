@@ -8,12 +8,12 @@ class UserModel(BaseModel):
         self.username = username
         self.is_created = True if username else False
 
-    def get_user(self, username):
+    def get_user(self):
 
         with self.db('dict') as cursor:
             cursor.execute("""
                 SELECT * FROM dashboard_users WHERE username = %s
-            """, (username, ))
+            """, (self.username, ))
             result = cursor.fetchone()
         
         if not result:
