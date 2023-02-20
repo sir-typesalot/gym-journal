@@ -23,7 +23,7 @@ class UserModel(BaseModel):
     def authenticate_user(self, username: str, password: str):
         user = self._get_user()
 
-        username_auth = user['username'] == username
+        username_auth = user.get('username') == username
         password_auth = self.check_password(user['password_hash'], password)
 
         return password_auth and username_auth
