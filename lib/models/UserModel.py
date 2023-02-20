@@ -1,82 +1,38 @@
 from .BaseModel import BaseModel
-from werkzeug.security import generate_password_hash, check_password_hash
+from typing import Optional
+import uuid
+import bcrypt
 
 class UserModel(BaseModel):
 
-    def __init__(self, username=None, user_id=None):
+    def __init__(self, user_id: str):
         super().__init__()
-        self.username = username
-        self.is_created = True if username else False
+        self.user_id = user_id
+        self.id = self.get_id()
 
-    def get_user(self):
+    def _get_user(self):
 
         with self.db('dict') as cursor:
             cursor.execute("""
-                SELECT * FROM dashboard_users WHERE username = %s
-            """, (self.username, ))
+                SELECT * FROM dashboard_users WHERE user_id = %s
+            """, (self.user_id, ))
             result = cursor.fetchone()
-        
-        if not result:
-            return {}
 
-        return result
-        
-    def create_new_user(self, username, password, email):
+        return result if result else {}
 
-        if self.user_exists(username):
-            self.is_created = True
-            self.username = username
-            return {}, 300
-        
-        password_hash = generate_password_hash(password=password)
-
-        with self.db() as cursor:
-            cursor.execute("""
-                INSERT INTO dashboard_users (username,password,email,date_created,last_updated) 
-                VALUES (%s, %s, %s, NOW(), NOW())
-            """, (username, password_hash, email))
-        
-        self.username = username
-        result = self.get_user_id()
-
-        status = 200 if result else 500
-        return result, status
-
-    def user_exists(self, username):
-        # Check to see if user already exists in the DB
-        with self.db('dict') as cursor:
-            cursor.execute("SELECT * FROM dashboard_users WHERE username = %s", (username, ))
-            result = cursor.fetchall()
-
-        return True if result else False
-
-    def authenticate_user(self, username, password):
-        user = self.get_user(username)
+    def authenticate_user(self, username: str, password: str):
+        user = self._get_user()
 
         username_auth = user['username'] == username
-        password_auth = check_password_hash(user['password'], password)
+        password_auth = self.check_password(user['password_hash'], password)
 
         return password_auth and username_auth
 
-    def get_user_id(self, username=None):
-        
-        if not username:
-            username = self.username
-        # Get user id
-        with self.db('dict') as cursor:
-            cursor.execute("SELECT user_id from dashboard_users WHERE username = %s", (username,))
-            result = cursor.fetchone()
+    def get_id(self):
+        return self._get_user().get('id')
 
-        return result['user_id']
+    def get_username(self):
+        return self._get_user().get('username')
 
-    def get_username(self, id=None):
-        
-        if not id:
-            id = self.user_id
-        # Get user id
-        with self.db('dict') as cursor:
-            print(id)
-            cursor.execute("SELECT username from dashboard_users WHERE user_id = %d", (id,))
-            result = cursor.fetchone()
-
-        return result['username']
+    def check_password(self, hash: str, pw: str):
+        return bcrypt.checkpw(pw.encode('utf8'), hash.encode('utf8'))

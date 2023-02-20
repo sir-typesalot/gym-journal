@@ -40,6 +40,7 @@ CREATE TABLE `dashboard_users` (
 	`email` VARCHAR(255) NOT NULL COMMENT 'email',
 	`password_hash` CHAR(60) NOT NULL COMMENT 'password',
 	`create_datetime` DATETIME NOT NULL COMMENT 'date',
+	`user_id` CHAR(30) NOT NULL,
 	PRIMARY KEY (`id`)
 );
 

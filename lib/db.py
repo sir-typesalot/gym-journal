@@ -21,9 +21,9 @@ class DB(object):
         cnx = mysql.connector.MySQLConnection(**config)
 
         if cur_type == 'dict':
-            cursor = cnx.cursor(dictionary=True)
+            cursor = cnx.cursor(dictionary=True, buffered=True)
         else: 
-            cursor = cnx.cursor()
+            cursor = cnx.cursor(buffered=True)
 
         try:
             yield cursor
