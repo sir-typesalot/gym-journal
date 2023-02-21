@@ -11,7 +11,7 @@ def get_db():
 def db():
     Config.SCHEMA = '_test_db'
     yield
-    tables = ['dashboard_users']
+    tables = ['dashboard_users', 'routine_edit_lock', 'routine', 'exercises']
     with get_db() as cursor:
         cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
         for table in tables:

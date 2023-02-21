@@ -24,11 +24,7 @@ CREATE TABLE `exercise_sets` (
 	`display_order` INT NOT NULL,
 	`unit` ENUM('repetition', 'time') NOT NULL,
 	`count` INT NOT NULL,
-	`rest` INT,
-	`rpe` INT,
-	`pct_1rm` INT,
-	`is_cluster_set` BOOLEAN NOT NULL DEFAULT false,
-	`cluster_set_scheme` VARCHAR(10) DEFAULT NULL,
+	`details` JSON COMMENT 'Contains the rpe, rest, pct1rm, cluster_set info and more',
 	PRIMARY KEY (`id`),
 	FOREIGN KEY (`exercise_id`) REFERENCES exercises(`id`),
 	FOREIGN KEY (`routine_id`) REFERENCES routine(`id`)

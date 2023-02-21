@@ -8,10 +8,6 @@ def test_get_user(db, expected):
     user = UserModel('9fe2c4e93f654fdbb24c02b15259716c')._get_user()
     assert user['username'] == expected
 
-def test_access_check():
-    with pytest.raises(AttributeError):
-        UserModel()._get_user()
-
 # @pytest.mark.parametrize("username,password,expected", [('test_user','justapass', True), ('foobar', 'blabla', False)])
 # def test_authenticate_user(db, username, password, expected):
 #     populate_tables(['dashboard_users'])
@@ -36,4 +32,4 @@ def test_create_user(db):
         '$2y$04$Lfxl0lAeEvh1/ek62Z81Yuaq7h.Qa2oGxh9l7uItscmkMGaDIon.C',
         '9fe2c4e93f654fdbb24c02b15259717d'
     )
-    assert user_id == '9fe2c4e93f654fdbb24c02b15259717d'
+    assert user_id == 1

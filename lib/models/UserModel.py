@@ -18,11 +18,7 @@ class UserModel(BaseModel):
     @BaseModel.access_check(check_value)
     def _get_user(self):
         if not self.user_info:
-            with self.db('dict') as cursor:
-                cursor.execute("""
-                    SELECT * FROM dashboard_users WHERE user_id = %s
-                """, (self.user_id, ))
-                result = cursor.fetchone()
+            result = self._get_('dashboard_users', 'user_id', self.user_id)
             self.user_info = result if result else {}
         return self.user_info
         
@@ -31,13 +27,14 @@ class UserModel(BaseModel):
         return self._get_user().get(attribute)
 
     def create_user(self, username: str, email: str, pw: str, user_id: str):
-        with self.db() as cursor:
-            cursor.execute("""
-                INSERT INTO dashboard_users (username, email, password_hash, user_id, create_datetime) 
-                VALUES (%s, %s, %s, %s, NOW())
-            """, (username, email, pw, user_id))
-        self.set_user(user_id)
-        return user_id
-    
+        columns = ['username', 'email', 'password_hash', 'user_id', 'create_datetime']
+        values = [username, email, pw, user_id, 'NOW()']
+        try:
+            id = self._insert_('dashboard_users', columns, values)
+            self.set_user(user_id)
+            return id
+        except:
+            print("Trouble adding user")
+
     # Change email
     # Change pw

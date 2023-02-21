@@ -7,8 +7,16 @@ def populate_dashboard_users():
             ('test_user', 't@gmail.com', '$2y$04$Lfxl0lAeEvh1/ek62Z81Yuaq7h.Qa2oGxh9l7uItscmkMGaDIon.C', '9fe2c4e93f654fdbb24c02b15259716c', NOW())
         """)
 
+def populate_routine():
+    with get_db() as cursor:
+        cursor.execute("""
+            INSERT INTO routine ('name', 'description', 'create_datetime', 'modify_datetime') VALUES
+            ('Test Routine', 'Just a test', NOW(), NOW())
+        """)
+
 table_map = {
-    'dashboard_users': populate_dashboard_users
+    'dashboard_users': populate_dashboard_users,
+    'routine': populate_routine
 }
 def populate_tables(tables: list):
     for table in tables:
