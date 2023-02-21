@@ -22,7 +22,7 @@ class BaseModel(object):
             return wrapper
         return decorator
     
-    def _get_(self, table: str, column: str, value: str):
+    def _get_(self, table: str, column: str, value: str, fetch_all=False):
         """Get data from table in database
 
         Args:
@@ -35,7 +35,12 @@ class BaseModel(object):
         """
         with self.db('dict') as cursor:
             cursor.execute(f"SELECT * FROM {table} WHERE {column} = %s", (value, ))
-            return cursor.fetchone()
+            data = cursor.fetchall()
+        
+        if data and not fetch_all:
+            return data[0]
+        else:
+            return data
         
     def _insert_(self, table: str, columns: list, values: list):
         """Method to perform simple INSERT operation
