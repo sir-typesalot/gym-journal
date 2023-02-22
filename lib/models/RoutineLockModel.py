@@ -8,7 +8,7 @@ class RoutineModel(BaseModel):
         self.routine_id = routine_id
 
     def get_lock(self):
-        details = self._get_('routine_edit_lock', 'routine_id', self.routine_id)
+        details = self._get_('routine_edit_lock', {'routine_id': self.routine_id})
         return details if details else {}
 
     def lock_routine(self, user_id: int):

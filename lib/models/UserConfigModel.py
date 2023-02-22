@@ -14,7 +14,7 @@ class UserConfigModel(BaseModel):
 
     def _get_settings(self, param=None):
         if not self.user_settings:
-            result = self._get_('user_configuration', 'user_id', self.user_id, fetch_all=True)
+            result = self._get_('user_configuration', {'user_id': self.user_id}, fetch_all=True)
             self.user_settings = result if result else {}
         return self.user_settings
 

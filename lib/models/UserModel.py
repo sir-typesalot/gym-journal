@@ -18,7 +18,7 @@ class UserModel(BaseModel):
     @BaseModel.access_check(check_value)
     def _get_user(self):
         if not self.user_info:
-            result = self._get_('dashboard_users', 'user_id', self.user_id)
+            result = self._get_('dashboard_users', {'user_id': self.user_id})
             self.user_info = result if result else {}
         return self.user_info
         

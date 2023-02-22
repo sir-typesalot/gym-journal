@@ -6,7 +6,7 @@ from .data_populator import populate_tables
 @pytest.mark.parametrize("expected", ['test_user'])
 def test_get(db, expected):
     populate_tables(['dashboard_users'])
-    user = BaseModel()._get_('dashboard_users', 'id', 1)
+    user = BaseModel()._get_('dashboard_users', {'id': 1})
     assert user['username'] == expected
 
 def test_access_check():

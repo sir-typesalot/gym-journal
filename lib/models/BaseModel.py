@@ -22,7 +22,7 @@ class BaseModel(object):
             return wrapper
         return decorator
     
-    def _get_(self, table: str, column: str, value: str, fetch_all=False):
+    def _get_(self, table: str, values: dict, fetch_all=False):
         """Get data from table in database
 
         Args:
@@ -34,7 +34,10 @@ class BaseModel(object):
             (dict): Result
         """
         with self.db('dict') as cursor:
-            cursor.execute(f"SELECT * FROM {table} WHERE {column} = %s", (value, ))
+            cursor.execute(f"""
+                SELECT * FROM {table} 
+                WHERE {' AND '.join([f'{x} = %s' for x,y in values.items()])}
+            """, tuple(values.values()))
             data = cursor.fetchall()
         
         if data and not fetch_all:
@@ -57,3 +60,12 @@ class BaseModel(object):
             """, tuple(values))
             
             return cursor.getlastrowid()
+
+    def _update_(self, table: str, values: dict, condition: list):
+        with self.db() as cursor:
+            cursor.execute(f"""
+                UPDATE {table}
+                SET {','.join([f'{x} = %s' for x,y in values.items()])}
+                WHERE {' AND '.join(condition)}
+            """, tuple(values.values()))
+            return cursor._executed

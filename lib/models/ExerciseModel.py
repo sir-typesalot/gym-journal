@@ -18,7 +18,7 @@ class ExerciseModel(BaseModel):
     @BaseModel.access_check(check_value)
     def _get_exercise(self):
         if not self.exercise_info:
-            result = self._get_('exercises', 'id', self.exercise_id)
+            result = self._get_('exercises', {'id': self.exercise_id})
             self.exercise_info = result if result else {}
         return self.exercise_info
         

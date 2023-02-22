@@ -18,7 +18,7 @@ class RoutineModel(BaseModel):
     @BaseModel.access_check(check_value)
     def _get_routine(self):
         if not self.routine_info:
-            result = self._get_('routine', 'id', self.routine_id)
+            result = self._get_('routine', {'id': self.routine_id})
             self.routine_info = result if result else {}
         return self.routine_info
         
