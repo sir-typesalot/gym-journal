@@ -1,41 +1,57 @@
-from .BaseModel import BaseModel
+from datetime import datetime
+import uuid
+import bcrypt
+from lib.Scribe import Scribe
+from lib.models.BaseModel import BaseModel
+from lib.models.DataClassModel import User
 
 class UserModel(BaseModel):
 
-    check_value = 'user_id'
-
-    def __init__(self, user_id=None):
+    def __init__(self):
         super().__init__()
-        self.user_info = {}
+        self.db = Scribe()
+        self.id = None
 
-        if user_id:
-            self.set_user(user_id)
-
-    def set_user(self, user_id):
-        self.user_id = user_id
-        self.id = self.get_attribute('id')
-        self.username = self.get_attribute('username')
-
-    @BaseModel.access_check(check_value)
-    def _get_user(self):
-        if not self.user_info:
-            result = self._get_('dashboard_users', {'user_id': self.user_id})
-            self.user_info = result if result else {}
-        return self.user_info
-        
-    @BaseModel.access_check(check_value)
-    def get_attribute(self, attribute: str):
-        return self._get_user().get(attribute)
-
-    def create_user(self, username: str, email: str, pw: str, user_id: str):
-        columns = ['username', 'email', 'password_hash', 'user_id', 'create_datetime']
-        values = [username, email, pw, user_id, 'NOW()']
+    def create(self, username: str, email: str, pw: str):
+        # Create user id and hash
+        user_id = uuid.uuid4().hex
+        password = self.create_password(pw)
+        # Create dataclass and convert to dict
+        user = User(username, email, password, datetime.now(), user_id).dict()
         try:
-            id = self._insert_('dashboard_users', columns, values)
-            self.set_user(user_id)
+            # Derive columns and values from dict
+            columns = list(user.keys())
+            values = list(user.values())
+            id = self.db.insert('dashboard_users', columns, values)
             return id
         except:
-            print("Trouble adding user")
+            # add logging at some point
+            print("Unable to create user")
+
+    def user_exists(self, user_id: str):
+        data = self.db.read('dashboard_users', {'user_id': user_id})
+        return True if data else False
+    
+    def get(self, search_term: dict):
+        user = self.db.read('dashboard_users', search_term)
+        if user:
+            self.id = user['id']
+            user = self.sanitize(user, User.headers())
+            return User(**user)
+        else:
+            return None
+
+    def create_password(self, pw: str):
+        return bcrypt.hashpw(pw.encode('utf8'), bcrypt.gensalt())
+
+    def check_password(self, hash: str, pw: str):
+        return bcrypt.checkpw(pw.encode('utf8'), hash.encode('utf8'))
+
+    def authenticate_user(self, username: str, password: str):
+        user = self.get('dashboard_users', {'id': self.id})
+        username_auth = user.get('username') == username
+        password_auth = self.check_password(user['password_hash'], password)
+        return password_auth and username_auth
 
     # Change email
     # Change pw
