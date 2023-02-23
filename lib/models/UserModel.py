@@ -7,6 +7,7 @@ class UserModel(BaseModel):
     def __init__(self, user_id=None):
         super().__init__()
         self.user_info = {}
+
         if user_id:
             self.set_user(user_id)
 

@@ -21,7 +21,11 @@ class RoutineModel(BaseModel):
             result = self._get_('routine', {'id': self.routine_id})
             self.routine_info = result if result else {}
         return self.routine_info
-        
+
+    @BaseModel.access_check(check_value)
+    def get_routine(self):
+        return self._get_routine()
+    
     @BaseModel.access_check(check_value)
     def get_attribute(self, attribute: str):
         return self._get_routine().get(attribute)
@@ -30,11 +34,7 @@ class RoutineModel(BaseModel):
         columns = ['name', 'description', 'create_datetime', 'modify_datetime']
         values = [name, description, 'NOW()', 'NOW()']
         try:
-            self._insert_('routine', columns, values)
-            with self.db() as cursor:
-                cursor.execute("SELECT MAX(id) from routine")
-                routine_id = cursor.fetchone()
-            return routine_id
+            return self._insert_('routine', columns, values)
         except:
-            print("Trouble creatng routine")
+            raise RuntimeError("Trouble creatng routine")
     

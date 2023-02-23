@@ -30,3 +30,7 @@ class UserManager(BaseModel):
     
     def check_password(self, hash: str, pw: str):
         return bcrypt.checkpw(pw.encode('utf8'), hash.encode('utf8'))
+
+
+# TODO: Implement a session management system
+# Either in this manager or a dedicated one

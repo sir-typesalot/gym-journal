@@ -1,3 +1,4 @@
+from functools import lru_cache
 import logging
 from app.config import Config
 from lib.db import DB
@@ -7,6 +8,8 @@ logging.basicConfig(level = logging.INFO)
 class BaseModel(object):
 
     check_value = None
+    table_name = ''
+    indexes = {}
 
     def __init__(self):
         self.db = DB(db=Config.SCHEMA).db_connect
@@ -23,16 +26,19 @@ class BaseModel(object):
         return decorator
     
     def _get_(self, table: str, values: dict, fetch_all=False):
-        """Get data from table in database
+        """Simple GET operation to fetch from table in DB
 
         Args:
-            table (str): Table to retrieve from
-            column (str): Column to search by
-            value (str): Value to search
+            table (str): Table name
+            values (dict): A map of the columns->values to search for
+            fetch_all (bool, optional): Whether to fetch all results of one. Defaults to False.
 
         Returns:
-            (dict): Result
-        """
+            if fetch_all:
+                list: List of rows, represented as dicts 
+            else:
+                dict: Singular row result
+        """            
         with self.db('dict') as cursor:
             cursor.execute(f"""
                 SELECT * FROM {table} 
@@ -50,9 +56,12 @@ class BaseModel(object):
 
         Args:
             table (str): Table to insert into
-            column (str): Columns to add data for
-            value (str): Data values
-        """
+            column (list): Columns to add data for
+            value (list): Data values
+        
+        Returns:
+            int: Last row id of an auto increment column
+        """       
         with self.db() as cursor:
             cursor.execute(f"""
                 INSERT INTO {table} ({','.join(columns)})
@@ -62,10 +71,38 @@ class BaseModel(object):
             return cursor.getlastrowid()
 
     def _update_(self, table: str, values: dict, condition: list):
+        """Simple update method to aid in generic operations
+
+        Args:
+            table (str): Name of target table
+            values (dict): A map of the columns->values to set to
+            condition (list): The conditions to check for
+
+        Returns:
+            str: The executed statement
+        """        
         with self.db() as cursor:
             cursor.execute(f"""
                 UPDATE {table}
                 SET {','.join([f'{x} = %s' for x,y in values.items()])}
                 WHERE {' AND '.join(condition)}
             """, tuple(values.values()))
+            return cursor._executed
+        
+    def _delete_(self, table: str, condition: list, values: dict):
+        """Simple delete method for basic operations
+
+        Args:
+            table (str): Target table name
+            condition (list): List of conditions to fulfill
+            values (dict): Map of values to apply to the conditions
+
+        Returns:
+            str: Executed query
+        """        
+        with self.db() as cursor:
+            cursor.execute(f"""
+                DELETE {table}
+                WHERE {' AND '.join(condition)}
+            """, values)
             return cursor._executed

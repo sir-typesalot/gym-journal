@@ -1,7 +1,7 @@
 
 from lib.models.BaseModel import BaseModel
 
-class RoutineModel(BaseModel):
+class RoutineLockModel(BaseModel):
 
     def __init__(self, routine_id):
         super().__init__()
