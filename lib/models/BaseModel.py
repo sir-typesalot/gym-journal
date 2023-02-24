@@ -30,4 +30,6 @@ class BaseModel(object):
         Returns:
             (tuple): Columns and Values in list forms
         """        
-        return list(entity.keys()), list(entity.values())
+        columns = list(entity.keys())
+        values = list(entity.values())
+        return columns, values

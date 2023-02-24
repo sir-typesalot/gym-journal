@@ -22,7 +22,7 @@ class DB(object):
 
         if cur_type == 'dict':
             cursor = cnx.cursor(dictionary=True, buffered=True)
-        else: 
+        else:
             cursor = cnx.cursor(buffered=True)
 
         try:

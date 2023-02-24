@@ -6,6 +6,7 @@ class ExerciseModel(BaseModel):
 
     def __init__(self):
         super().__init__()
+        self.db = Scribe()
 
     def create(self, name: str, is_unilateral: bool, is_bodyweight: bool, details: dict):
         # Create dataclass and convert to dict
@@ -30,6 +31,10 @@ class ExerciseModel(BaseModel):
         else:
             exercise = self.sanitize(exercise, Exercise.headers())
             return Exercise(**exercise)
+        
+    def modify(self, exercise: Exercise):
+        conditions = [f"name = '{exercise.name}'"]
+        self.db.update('exercises', exercise.dict(), conditions)
         
     def create_new(self, name: str, is_unilateral: bool, is_bodyweight: bool, details: dict):
         exists = self.exists(name)

@@ -2,6 +2,7 @@ from dataclasses import dataclass, asdict
 from datetime import datetime
 import json
 
+# TypedDict might be an option if perf is too slow
 class BaseModel:
 
     def dict(self):

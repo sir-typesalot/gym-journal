@@ -19,9 +19,9 @@ def populate_exercises():
     with get_db() as cursor:
         cursor.execute("""
             INSERT INTO exercises (name, is_unilateral, is_bodyweight, details) VALUES 
-            ('Bench Press', false, false, '{}'),
-            ('Pullup', false, true, '{}'),
-            ('Meadows Row', true, false, '{}')
+            ('Bench Press', 0, 1, '{}'),
+            ('Pullup', 0, '1', '{}'),
+            ('Meadows Row', 1, 0, '{}')
         """)
 
 def populate_routine_map():

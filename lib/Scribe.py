@@ -53,7 +53,7 @@ class Scribe(object):
             
             return cursor.getlastrowid()
 
-    def update(self, table: str, values: dict, condition: list):
+    def update(self, table: str, new_values: dict, condition: list):
         """Simple update method to aid in generic operations
 
         Args:
@@ -67,12 +67,12 @@ class Scribe(object):
         with self.db() as cursor:
             cursor.execute(f"""
                 UPDATE {table}
-                SET {','.join([f'{x} = %s' for x,y in values.items()])}
+                SET {','.join([f'{x} = %s' for x,y in new_values.items()])}
                 WHERE {' AND '.join(condition)}
-            """, tuple(values.values()))
+            """, tuple(new_values.values()))
             return cursor._executed
         
-    def drop(self, table: str, values: dict, condition: list):
+    def drop(self, table: str, condition_values: dict, condition: list):
         """Simple delete method for basic operations
 
         Args:
@@ -87,7 +87,7 @@ class Scribe(object):
             cursor.execute(f"""
                 DELETE {table}
                 WHERE {' AND '.join(condition)}
-            """, values)
+            """, condition_values)
             return cursor._executed
         
     def custom_query(self, query: str, params: dict):
