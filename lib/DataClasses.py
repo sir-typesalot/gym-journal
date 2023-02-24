@@ -33,7 +33,7 @@ class Routine(BaseModel):
     name: str
     description: str
     create_datetime: datetime
-    modify_datetime: str
+    modify_datetime: datetime
 
 @dataclass
 class Exercise(BaseModel):

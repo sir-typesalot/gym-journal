@@ -72,7 +72,7 @@ class Scribe(object):
             """, tuple(values.values()))
             return cursor._executed
         
-    def drop(self, table: str, condition: list, values: dict):
+    def drop(self, table: str, values: dict, condition: list):
         """Simple delete method for basic operations
 
         Args:

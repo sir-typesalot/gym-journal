@@ -1,7 +1,5 @@
-from functools import lru_cache
 import logging
-from app.config import Config
-from lib.db import DB
+from lib.Scribe import Scribe
 
 logging.basicConfig(level = logging.INFO)
 
@@ -9,6 +7,7 @@ class BaseModel(object):
 
     def __init__(self):
         self.logger = logging.getLogger("base_logger")
+        self.db = Scribe()
     
     def sanitize(self, data: dict, headers: list):
         """Sanitize raw data before passing into dataclass
@@ -21,3 +20,14 @@ class BaseModel(object):
             dict: Key->Values that conform to the dataclass
         """        
         return {k: data[k] for k in headers}
+    
+    def split(self, entity: dict):
+        """Extract columns and values from an entity dict
+
+        Args:
+            entity (dict): Dict to extract
+
+        Returns:
+            (tuple): Columns and Values in list forms
+        """        
+        return list(entity.keys()), list(entity.values())
