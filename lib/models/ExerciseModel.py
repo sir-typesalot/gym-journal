@@ -43,3 +43,10 @@ class ExerciseModel(BaseModel):
         else:
             id = self.create(name, is_unilateral, is_bodyweight, details)
             return id
+        
+    def delete(self, name: str):
+        values = {
+            'name': name
+        }
+        conditions = ["name = %(name)s"]
+        self.db.drop('exercises', values, conditions)
